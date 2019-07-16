@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>3D变换DEMO</title>
+    <style>
+      .stage {
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        transform: translate(-50%, -50%);
+        perspective: 800px;
+        transform-style: preserve-3d;
+      }
+
+      .box {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        transform-style: preserve-3d;
+        transform-origin: 50% 50% -100px;
+      }
+
+      /* .box:hover {
+        transform: rotateX(-90deg);
+      } */
+
+      .mian {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        font-size: 24px;
+        color: #333333;
+      }
+
+      .mian-1 {
+        background: red;
+      }
+      .mian-2 {
+        top: 200px;
+        transform-origin: top;
+        transform: rotateX(-90deg);
+        background: orange;
+      }
+      .mian-3 {
+        /* left: -400px; */
+        transform: translateZ(-200px);
+        background: yellow;
+      }
+      .mian-4 {
+        left: -200px;
+        transform-origin: right;
+        transform: rotateY(-90deg);
+        background: green;
+      }
+      .mian-5 {
+        right: -200px;
+        transform-origin: left;
+        transform: rotateY(90deg);
+        background: grey;
+      }
+      .mian-6 {
+        top: -200px;
+        transform-origin: bottom;
+        transform: rotateX(90deg);
+        background: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <div class="box">
+        <div class="mian mian-1">1</div>
+        <div class="mian mian-2">2</div>
+        <div class="mian mian-3">3</div>
+        <div class="mian mian-4">4</div>
+        <div class="mian mian-5">5</div>
+        <div class="mian mian-6">6</div>
+      </div>
+    </div>
+  </body>
+  <script>
+    let box = document.getElementsByClassName("box")[0];
+    console.log("box");
+
+    //元素的鼠标落下事件
+    box.onmousedown = function(ev) {
+      console.log("onmousedown");
+
+      //event的兼容性
+      var ev = ev || event;
+
+      //获取鼠标按下的坐标
+      var x1 = ev.clientX;
+      var y1 = ev.clientY;
+
+      //获取元素的left，top值
+      var l = box.offsetLeft;
+      var t = box.offsetTop;
+
+      //给可视区域添加鼠标的移动事件
+      document.onmousemove = function(ev) {
+        //event的兼容性
+        var ev = ev || event;
+
+        //获取鼠标移动时的坐标
+        var x2 = ev.clientX;
+        var y2 = ev.clientY;
+
+        //计算出鼠标的移动距离
+        var x = x2 - x1;
+        var y = y2 - y1;
+
+        // //移动的数值与元素的left，top相加，得出元素的移动的距离
+        // var lt = y + t;
+        // var ls = x + l;
+
+        console.log("x", x);
+        console.log("y", y);
+
+        //更改元素的left，top值
+        box.style.transform = `rotateX(${-y}deg) rotateY(${x}deg)`;
+        // box.style.left = ls + "px";
+      };
+
+      //清除
+      document.onmouseup = function(ev) {
+        document.onmousemove = null;
+      };
+    };
+  </script>
+</html>
